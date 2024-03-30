@@ -21,7 +21,7 @@ export default function Loading() {
                         <td>JavaScript</td>
                         <td>2528427</td>
                         <td>
-                            <Button>
+                            <Button variant="contained">
                                 <a href={`https://stackoverflow.com/questions/tagged/javascript`}>LEARN MORE</a>
                             </Button>
                         </td>
@@ -30,7 +30,7 @@ export default function Loading() {
                         <td>php</td>
                         <td>2528527</td>
                         <td>
-                            <Button>
+                            <Button variant="contained">
                                 <a href={`https://stackoverflow.com/questions/tagged/php`}>LEARN MORE</a>
                             </Button>
                         </td>
@@ -39,7 +39,7 @@ export default function Loading() {
                         <td>c#</td>
                         <td>3451237</td>
                         <td>
-                            <Button>
+                            <Button variant="contained">
                                 <a href={`https://stackoverflow.com/questions/tagged/c#`}>LEARN MORE</a>
                             </Button>
                         </td>
@@ -48,7 +48,7 @@ export default function Loading() {
                         <td>dotnet</td>
                         <td>98712422</td>
                         <td>
-                            <Button>
+                            <Button variant="contained">
                                 <a href={`https://stackoverflow.com/questions/tagged/dotnet`}>LEARN MORE</a>
                             </Button>
                         </td>

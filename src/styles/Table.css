@@ -3,12 +3,14 @@
 
 td * a {
     text-decoration: none;
-    color: rgb(27, 27, 27);
+    color: white;
     transition: 0.3s;
 }
-td:hover  * a{
-    color: rgb(0, 0, 0);
-    transform: scale(1.05);
+.MuiButtonBase-root:hover > a{
+    color: rgb(24, 118, 210);
+}
+.MuiButtonBase-root:hover {
+background-color: white !important;
 }
 
 .tableBody{
