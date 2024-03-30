@@ -1,0 +1,18 @@
+.header {
+}
+
+td * a {
+    text-decoration: none;
+    color: rgb(27, 27, 27);
+    transition: 0.3s;
+}
+td:hover  * a{
+    color: rgb(0, 0, 0);
+    transform: scale(1.05);
+}
+
+.tableBody{
+    border-radius: 20px !important;
+    background-color: red;
+    border: 1px solid black;
+}
