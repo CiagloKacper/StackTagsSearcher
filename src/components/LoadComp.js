@@ -1,7 +1,6 @@
 import { Table } from "react-bootstrap";
-import "../styles/loading.css";
+import "../styles/Loading.css";
 import { Button, CircularProgress } from "@mui/material";
-import { IconLoader2 } from "@tabler/icons-react";
 
 export default function Loading() {
 
