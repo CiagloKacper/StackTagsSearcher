@@ -1,12 +1,46 @@
 import { Table } from "react-bootstrap";
 import "../styles/Loading.css";
-import { Button, CircularProgress } from "@mui/material";
+import { Button, IconButton, Snackbar } from "@mui/material";
+import { IconX, IconZoomExclamation} from "@tabler/icons-react";
+import { useState } from "react";
 
-export default function Loading() {
+export default function Error(props) {
+
+    const [open, setOpen] = useState(true);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    const action = (
+        <>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <IconX fontSize="small" />
+          </IconButton>
+        </>
+      );
 
     return (
         <div className="loadBody">
-            <CircularProgress size={64} className="loadSVG"/>
+            <IconZoomExclamation size={64} className="loadSVG errorIcon" />
+
+            <Snackbar
+                open={open}
+                autoHideDuration={8000}
+                onClose={handleClose}
+                message={props.errorMsg}
+                action={action}
+            />
+
             <Table className="my-5 loadTable" striped responsive hover>
                 <thead className="header">
                     <tr>
@@ -39,7 +73,7 @@ export default function Loading() {
                         <td>3451237</td>
                         <td>
                             <Button variant="contained">
-                                <a href={`https://www.youtube.com/watch?v=dQw4w9WgXcQ`}>LEARN MORE</a>
+                                <a>LEARN MORE</a>
                             </Button>
                         </td>
                     </tr>

@@ -7,19 +7,23 @@ import { IconAdjustments, IconArrowBadgeDownFilled, IconBrandStackoverflow } fro
 
 import "../styles/Filter.css";
 import axios from "axios";
+import Error from "./Error";
 
 export default function Inputs() {
-
+    //pagination state
     const [page, setPage] = useState(1);
-
+    //default call to get the first page of data
     const [queries, UpdateQueries] = useState({
         "sort": "popular",
         "order": "desc",
-        "page": page,
-        "pagesize": "1"
+        "page": "1",
+        "pagesize": "2"
     });
 
+    //error & load status
     const [loadStatus, setNewLoadStatus] = useState(false);
+    const [errorObj, setError] = useState("");
+
     const [tagsData, setTagsData] = useState([
         {}
     ])
@@ -32,37 +36,39 @@ export default function Inputs() {
     }
 
     const ApiCall = () => {
+        //clear status before api call
         setNewLoadStatus(false);
+        setError("");
 
-        setTimeout(() => {
-            setNewLoadStatus(true);
-            setTagsData([
-                {
-                    "name": "Loading...",
-                    "count": "10002"
-                }
-            ])
-        }, 1500)
-
-        // axios.get(`https://api.stackexchange.com/2.3/tags?site=stackoverflow${CreateSearchUrl(queries)}`)
-        //     .then(response => {
-        //         setNewLoadStatus(true);
-        //         setTagsData(response.data.items)
-        //     });
+        axios.get(`https://api.stackexchange.com/2.3/tags?site=stackoverflow${CreateSearchUrl(queries)}`)
+            .then(response => {
+                //200 OK
+                setNewLoadStatus(true);
+                setTagsData(response.data.items)
+            }).catch((error) => {
+                //catch and display error
+                setNewLoadStatus(true)
+                setError(`${error.response.data.error_message} : ${error.response.data.error_name}`);
+            });
     }
 
     //new page status 
     const newPage = (event) => {
-        if (event != "next" && page >= 2) {
-            setPage(page - 1);
-            updateQueriesStatus("page", page);
+        if (event != "next" ) {
+            if (page != 1) {
+
+                setPage(page - 1);
+                updateQueriesStatus("page", page);
+            }
         }
         else {
             setPage(page + 1);
             updateQueriesStatus("page", page);
         }
+        //refresh search
         ApiCall();
     }
+    //update queries by key
     const updateQueriesStatus = (key, val) => {
         UpdateQueries((prevState) => {
             const updatedQueries = { ...prevState };
@@ -160,7 +166,7 @@ export default function Inputs() {
                                 <MenuItem value={"desc"}>descending</MenuItem>
                                 <MenuItem value={"asc"}>ascending</MenuItem>
                             </Select>
-                            <p className="helperText">&nbsp;option "popular" is the default setting</p>
+                            <p className="helperText">&nbsp;option "descending" is the default setting</p>
                             <div className="mt-3 d-flex">
                                 <Button onClick={() =>
                                     UpdateQueries(prevQueries => {
@@ -178,15 +184,22 @@ export default function Inputs() {
 
             </div>
             {
+                // display data only when loaded
                 loadStatus ?
-                    <>
-                        <TableGenerator tags={tagsData} />
-                        <div className="text-center">
-                            <Button onClick={() => newPage("nextnt")}>prev</Button>
-                            <span>&nbsp;Page: {page}&nbsp;</span>
-                            <Button onClick={() => newPage("next")}>next</Button>
-                        </div>
-                    </>
+                    // display when no error occur
+                    (errorObj == "" ?
+
+                        <>
+                            <TableGenerator tags={tagsData} />
+                            <div className="text-center">
+                                <Button onClick={() => newPage("nextnt")}>prev</Button>
+                                <span>&nbsp;Page: {page}&nbsp;</span>
+                                <Button onClick={() => newPage("next")}>next</Button>
+                            </div>
+                        </>
+                        :
+                        <Error errorMsg={errorObj} />
+                    )
                     :
                     <Loading />
             }
@@ -195,6 +208,7 @@ export default function Inputs() {
     )
 }
 
+//create url for api call based on queries OBJ
 function CreateSearchUrl(searchCriteria) {
     let searchUrl = '';
 
